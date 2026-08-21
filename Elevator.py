@@ -1,30 +1,31 @@
 class Elevator:
-    def __init__(self, current_floor):
+    def __init__(self, total_floors=5, current_floor=0):
+        self.total_floors = total_floors
         self.current_floor = current_floor
-        self.move_up_down = move_up_down
-        self.doors = ['Closing', 'Opening']
+        self.direction = "IDLE"
+        self.up_queue = []
+        self.down_queue = []
 
-        active_queue = [self.current_floor]
-        up_queue = []
-        down_queue = []
+    def display_building(self):
+        """Draws a vertical shaft showing all floors and the elevator's current position."""
+        width = 24
+        border = "+" + "-" * width + "+"
 
-        def add_request(dest_floor):
-            if dest_floor < 0:
-                return "Floor must be greater than 0"
-            if dest_floor > self.current_floor:
-                up_queue.append(dest_floor)
+        # A display for users before they enter their destination floor.
+        print("\n" + border)
+        print("|{:^24}|".format("BUILDING SHAFT"))
+        print(border)
 
+        
+        for floor in range(self.total_floors, -1, -1):
+            if floor == self.current_floor:
+                row_content = f" [Floor {floor:02d}] <== [ELEVATOR]"
             else:
-                down_queue.append(dest_floor)
+                row_content = f" [Floor {floor:02d}] |"
+            
+            print(f"| {row_content:<{width - 1}}|")
+            
+            if floor > 0:
+                print("|" + " " * width + "|")
 
-        def step():
-            if self.current_floor in active_queue:
-                print('Stopping')
-                print(f"{self.doors[1]} the doors")
-
-            else:
-                print(f"{self.doors[0]} the doors")
-
-
-
-
+        print(border)
