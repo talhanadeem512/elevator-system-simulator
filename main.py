@@ -1,7 +1,9 @@
 from elevator import Elevator
 
 def run():
-    elevator = Elevator(total_floors=6, current_floor=2)
+
+
+    elevator = Elevator(current_floor=2)
     
     # 1. Show the building before asking for input
     elevator.display_building()
