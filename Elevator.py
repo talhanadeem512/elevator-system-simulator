@@ -1,5 +1,9 @@
 import heapq
 class Elevator:
+    """
+    Represents a single elevator car.
+    Uses Min-Heap and Max-Heap priority queues to implement SCAN algorithm, ensuring efficient movement wihtout backtracking.
+    """
     def __init__(self, total_floors=10, current_floor=0):
         self.total_floors = total_floors
         self.current_floor = current_floor
@@ -8,6 +12,7 @@ class Elevator:
         self.down_queue = []
 
     def add_request(self, dest_floor):
+        # Validation checks for given floor.
         if dest_floor < 0:
             print("The destination floor should be greater than 0")
             return
@@ -15,13 +20,16 @@ class Elevator:
         elif dest_floor == self.current_floor:
             print(f"Elevator is {self.direction}")
 
+        # Uses default Min-Heap behaviour to stop at lowest floor first.
         elif dest_floor > self.current_floor:
             heapq.heappush(self.up_queue, dest_floor)
-
+        # Multiplies by -1 to trick heapq into acting as Max-heap.
+        # This ensures the elavator stops at highest floor first when descending.
         else:
             heapq.heappush(self.down_queue, -dest_floor)
 
     def move(self):
+        # Validation check for IDLE elevator.
         if self.direction == "IDLE":
             if len(self.up_queue) > 0:
                 self.direction = "UP"
@@ -32,6 +40,8 @@ class Elevator:
         if self.direction == "UP":
             self.current_floor = heapq.heappop(self.up_queue)
             self.display_building()
+
+            # SCAN Algorithm: Continue UP until queue is empty, then evaluate next direction.
             if not len(self.up_queue):
                 if not len(self.down_queue):
                     self.direction = "IDLE"
