@@ -8,19 +8,45 @@ class Elevator:
         self.down_queue = []
 
     def add_request(self, dest_floor):
-            if dest_floor < 0:
-                print("The destination floor should be greater than 0")
-                return
+        if dest_floor < 0:
+            print("The destination floor should be greater than 0")
+            return
             
-            elif dest_floor == self.current_floor:
-                print(f"Elevator is {self.direction}")
+        elif dest_floor == self.current_floor:
+            print(f"Elevator is {self.direction}")
 
-            elif dest_floor > self.current_floor:
-                heapq.heappush(self.up_queue, -dest_floor)
+        elif dest_floor > self.current_floor:
+            heapq.heappush(self.up_queue, dest_floor)
 
-            else:
-                heapq.heappush(self.down_queue, dest_floor)
-    
+        else:
+            heapq.heappush(self.down_queue, -dest_floor)
+
+    def move(self):
+        if self.direction == "IDLE":
+            if len(self.up_queue) > 0:
+                self.direction = "UP"
+
+            elif len(self.down_queue) > 0:
+                self.direction = "DOWN"
+
+        if self.direction == "UP":
+            self.current_floor = heapq.heappop(self.up_queue)
+            self.display_building()
+            if not len(self.up_queue):
+                if not len(self.down_queue):
+                    self.direction = "IDLE"
+                else:
+                    self.direction = "DOWN"
+
+        elif self.direction == "DOWN":
+            self.current_floor = heapq.heappop(self.down_queue) * -1
+            self.display_building()
+            if not len(self.down_queue):
+                if not len(self.up_queue):
+                    self.direction = "IDLE"
+                else:
+                    self.direction = "UP"
+
 
     def display_building(self):
         """Draws a vertical shaft showing all floors and the elevator's current position."""
