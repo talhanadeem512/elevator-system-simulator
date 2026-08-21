@@ -3,7 +3,8 @@ from elevator import Elevator
 def run():
 
 
-    elevator = Elevator(current_floor=2)
+    elevator = Elevator()
+    
     
     # 1. Show the building before asking for input
     elevator.display_building()

@@ -1,23 +1,25 @@
-import heapq()
+import heapq
 class Elevator:
-    def __init__(self, total_floors=10, current_floor=0, dest_floor):
+    def __init__(self, total_floors=10, current_floor=0):
         self.total_floors = total_floors
         self.current_floor = current_floor
         self.direction = "IDLE"
         self.up_queue = []
         self.down_queue = []
 
-        if dest_floor < 0:
-            return "The destination floor should be greater than 0"
+    def add_request(self, dest_floor):
+            if dest_floor < 0:
+                print("The destination floor should be greater than 0")
+                return
+            
+            elif dest_floor == self.current_floor:
+                print(f"Elevator is {self.direction}")
 
-        elif dest_floor == self.current_floor:
-            print(f"Elevator is {self.direction}")
+            elif dest_floor > self.current_floor:
+                heapq.heappush(self.up_queue, -dest_floor)
 
-        elif dest_floor > self.current_floor:
-            heapq.heappush(self.up_queue, dest_floor)
-
-        else:
-            heapq.heappush(self.down_queue, dest_floor)
+            else:
+                heapq.heappush(self.down_queue, dest_floor)
     
 
     def display_building(self):
